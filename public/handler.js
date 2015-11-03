@@ -12,12 +12,11 @@ dino.handle = {};
 
 dino.handle = function() {
 
-    var dino.handle.all = -1;
-    var criteria;
-    var dino.handle.criteriaMaxLen = [5, 5, 12];
-    var dino.handle.majorMaxLen = 5;
-    var dino.handle.yearMaxLen = 5;
-    var dino.handle.schoolMaxLen = 5;
+    dino.handle.all = -1;
+    dino.handle.criteriaMaxLen = [5, 5, 12];
+    dino.handle.majorMaxLen = 5;
+    dino.handle.yearMaxLen = 5;
+    dino.handle.schoolMaxLen = 5;
 
     dino.handle.fetch = function() {
         
@@ -27,21 +26,23 @@ dino.handle = function() {
         var schools = dino.help.parseToIntArr($('#school').val());
 
         // Put each array into another array
-        criteria = [majors, years, schools];
+        var criteria = [majors, years, schools];
+		return criteria;
 
     };
 
     dino.handle.submit = function() {
-        
+        console.log('Someone hit submit');
         // Grab an array of the selected elements in the lists
-        dino.handle.fetch();
+        var criteria = dino.handle.fetch();
         
         // Pass the input tho the controller
         dino.viz.vizController(criteria);
     };
 
-    dino.handle.init = function() {
-        
+    var initialize = function()
+	{
+		console.log('Initialize Handler');
 		// Grab the 'Submit' button element, identified by the
 		// 'submit-btn' id.
 		var button = document.getElementById('submit-btn');
@@ -50,8 +51,9 @@ dino.handle = function() {
 		// fetch function shall be invoked.
 		button.onclick = dino.handle.sumbit;
 
-
 	};
+	
+	initialize();
 
 };
 

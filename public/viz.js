@@ -43,10 +43,10 @@ dino.viz = function() {
 		width: 700,
 		height: 400,
 		title: 'Confidence with Research',
-		hAxis: {
-			title: 'Month',
-			gridlines: {count: 12}
-		},
+		//hAxis: {
+		//	title: 'Month',
+		//},
+		//How to implement horizontal axis?
 		vAxis: {
 			title: 'Confidence'
 		},
@@ -70,7 +70,7 @@ dino.viz = function() {
 		// 9/19/2015 Corrected typo
 		// Make the initial query to get the whole Fusion table. The Fusion
 		// table’s ID is listed in red.                                                            
-		var query = "SELECT Year, Major, School, Type, AveConfidence, Sessions FROM 1-OBa3j2heK1znLQ2jb3EpqYZ90i4ahW6Z6wih8Pd";
+		var query = "SELECT Year, Major, School, Type, AveConfidence FROM 1-OBa3j2heK1znLQ2jb3EpqYZ90i4ahW6Z6wih8Pd";
 
 		var opts = {sendMethod: 'auto'};
 		var queryObj = new google.visualization.Query('https://www.google.com/fusiontables/gvizdata?tq=', opts);
@@ -96,12 +96,12 @@ dino.viz = function() {
             
             // Sort the data indexes by grade, then major, then school
             var rowInds = rawData.getSortedRows([{column: 1},{column: 2},{column: 3}]);
-			int count = 0;
-            for(int i=0; i<criteria[0].length; i++)
+			var count = 0;
+            for(var i=0; i<criteria[0].length; i++)
             {
-				for(int j=0; j<criteria[1].length; j++)
+				for(var j=0; j<criteria[1].length; j++)
                 {
-					for(int k=0; k<criteria[2].length; k++)
+					for(var k=0; k<criteria[2].length; k++)
                     {
                         var grade = view.getValue(rowInds[count],1);
                         var major = view.getValue(rowInds[count],2);
