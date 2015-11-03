@@ -11,11 +11,11 @@
  */
 
 //Extend namespace
-var librs = librs || {};
-librs.viz = {};
+var dino = dino || {};
+dino.viz = {};
 
 //Start module
-librs.viz = function() {
+dino.viz = function() {
  
 	google.load('visualization', '1', {packages: ['corechart']});
 
@@ -24,12 +24,13 @@ librs.viz = function() {
 	// Define the variables to hold the entire fusion table,
 	// and a collection of views, one for each year.
 	var data;
+	var rawData;
 	var totals = {};
 	
-	//Default criteria to narrow graph (show everything)
-	var criteria = [];
-	for(int i=0;i<4;i++) {
-		criteria.push([librs.handle.all]);
+	//Default criteria to narrow graph (Show UP versus 3 other schools)
+	var criteria = [[dino.handle.all],[dino.handle.all],[1,2,3]];
+	for(var i = 0; i < 4; i++) {
+		criteria.push([dino.handle.all]);
 	}
 
 	// Define the variable to hold the chart.                                                                              
@@ -79,37 +80,62 @@ librs.viz = function() {
 		// to the console.                                                                
 		queryObj.setQuery(query);
 		queryObj.send(function(e) {
-			data = e.getDataTable();
+		rawData = e.getDataTable();
 
-			console.log(data);
-
-			// Create a view for academic year 2013-2014 that                                                          
-			// is the first two columns of the data, just the                                                          
-			// rows that have 2013-2014 for the value.                                                                 
-
-			// First, get the textualized range of the year.                                                           
+			                                                          
 			
 
-			// Next, create the object and get the rows 
-			// corresponding to "thisYear".                                   
-			var view = new google.visualization.DataView(data);
-			for(int i=0;i<librs.handle.years.length;i++) {
-				for(int j=0;j<librs.handle.majors.length;j++) {
-					for(int k=0;k<librs.handle.schools.length;k++) {
-						for(int l=0;l<librs.handle.types.length;l++) {
-							var rows = view.getFilteredRows([
-							{column: 1, value: librs.handle.years[i]},
-							{column: 2, value: librs.handle.majors[j]},
-							{column: 3, value: librs.handle.schools[k]},
-							{column: 4, value: librs.handle.types[l]}]);
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Grade');
+		data.addColumn('string', 'Major');
+		data.addColumn('string', 'School');
+		data.addColumn('number', 'Average Confidence');
+
+
+		
+            
+            // Sort the data indexes by grade, then major, then school
+            var rowInds = rawData.getSortedRows([{column: 1},{column: 2},{column: 3}]);
+			int count = 0;
+            for(int i=0; i<criteria[0].length; i++)
+            {
+				for(int j=0; j<criteria[1].length; j++)
+                {
+					for(int k=0; k<criteria[2].length; k++)
+                    {
+                        var grade = view.getValue(rowInds[count],1);
+                        var major = view.getValue(rowInds[count],2);
+                        var school = view.getValue(rowInds[count],3);
+                        
+                        var sum = 0;
+                        var c = 0;
+                        while((grade == criteria[0][i] || grade < 0) && 
+                            (major == criteria[1][j] || major < 0) &&
+                            (school == criteria[2][k] || school < 0))
+                        {
+                            //get confidance and add to sum
+                            sum += view.getValue(rowInds[count],6);
+                            count++;
+							c++;
+                        }
+						if(sum !== 0)
+						{
+							// Divide sum by the count 
+							var avg = sum/c;
 							
+							var gradeStr = dino.help.intToGrade(grade);
+							var majorStr = dino.help.intToMajor(major);
+							var schoolStr = dino.help.intToSchool(school);
+							data.addRows([[gradeStr,majorStr,schoolStr, avg]]);
 						}
 					}
 				}
 			}
 			
-
-		    
+			// Next, create the object and get the rows 
+			// corresponding to "thisYear".                                   
+			var view = new google.visualization.DataView(data);
+			
 			view.setRows();
 
 			// Get a subset of the columns.                                                                            
@@ -120,24 +146,19 @@ librs.viz = function() {
 		});
 	}
 
-	librs.viz.vizController = function(thisYear) {
-		console.log('Passed to visController: '.concat(thisYear));
-		if(typeof views[thisYear] == 'undefined') {
-			console.log('undefined year: '.concat(thisYear));
-			// Next, create the object and get the rows 
-			// corresponding to "thisYear".                                   
-			views[thisYear] = new google.visualization.DataView(data);
-		   
-			views[thisYear].setRows(views[thisYear].getFilteredRows([{column: 2, value: thisYear}]));
+	dino.viz.vizController = function(criteria) {
+		      
+        var view = new google.visualization.DataView(data);
+        
+        view.setRows(views[thisYear].getFilteredRows([{column: 2, value: thisYear}]));
 
-			// Get a subset of the columns.                                                                            
-			views[thisYear].setColumns([0, 3]);
-			console.log('now defined year: '.concat(thisYear));
-		}
+        // Get a subset of the columns.                                                                            
+        view.setColumns([0, 3]);
+
 		var lastYear = thisYear.split('-')[1];
 		options.title =  'Session Hours Provided by University of Portland Librarians in '.concat(lastYear);
 		chart.draw(views[thisYear].toDataTable(), options);
 	};
 };
 
-librs.viz();
+dino.viz();
