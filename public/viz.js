@@ -27,9 +27,9 @@ dino.viz = function() {
 	var totals = {};
 	
 	//Default criteria to narrow graph (Show UP versus 3 other schools)
-	var criteria = [[dino.handle.all],[dino.handle.all],[1,2,3]];
+	var criteria = [[-1],[-1],[1,2,3]];
 	for(var i = 0; i < 4; i++) {
-		criteria.push([dino.handle.all]);
+		criteria.push([-1]);
 	}
 
 	// Define the variable to hold the chart.                                                                              
@@ -80,20 +80,14 @@ dino.viz = function() {
 		// to the console.                                                                
 		queryObj.setQuery(query);
 		queryObj.send(function(e) {
-		rawData = e.getDataTable();
+			rawData = e.getDataTable();
 
-			                                                          
-			
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Grade');
+			data.addColumn('string', 'Major');
+			data.addColumn('string', 'School');
+			data.addColumn('number', 'Average Confidence');
 
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'Grade');
-		data.addColumn('string', 'Major');
-		data.addColumn('string', 'School');
-		data.addColumn('number', 'Average Confidence');
-
-
-		
-            
             // Sort the data indexes by grade, then major, then school
             var rowInds = rawData.getSortedRows([{column: 1},{column: 2},{column: 3}]);
 			var count = 0;

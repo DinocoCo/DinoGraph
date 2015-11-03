@@ -40,7 +40,7 @@ dino.handle = function() {
         dino.viz.vizController(criteria);
     };
 
-    var initialize = function()
+    window.onload = function()
 	{
 		console.log('Initialize Handler');
 		// Grab the 'Submit' button element, identified by the
@@ -52,8 +52,6 @@ dino.handle = function() {
 		button.onclick = dino.handle.sumbit;
 
 	};
-	
-	initialize();
 
 };
 
