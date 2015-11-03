@@ -2,12 +2,11 @@
  * viz.js
  *
  * Defines:
- * - The data to be visualized in the chart.
- * - The options for the look of the chart to be drawn.
- * - How to draw the chart.
  *
- * @author: Tanya L. Crenshaw
- * @since: Jan 6, 2015
+ * @author: Anthony Donaldson
+ * @author: Ken Kobayashi
+ * @author: Justin Ohta
+ * @since: November 3, 2015
  */
 
 //Extend namespace
@@ -69,7 +68,7 @@ dino.viz = function() {
 
 		// 9/19/2015 Corrected typo
 		// Make the initial query to get the whole Fusion table. The Fusion
-		// table’s ID is listed in red.                                                            
+		// tableï¿½s ID is listed in red.                                                            
 		var query = "SELECT Year, Major, School, Type, AveConfidence, Sessions FROM 1-OBa3j2heK1znLQ2jb3EpqYZ90i4ahW6Z6wih8Pd";
 
 		var opts = {sendMethod: 'auto'};
