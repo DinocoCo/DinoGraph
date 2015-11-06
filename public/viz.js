@@ -27,7 +27,7 @@ dino.viz = function() {
 	var totals = {};
 	
 	//Default criteria to narrow graph (Show UP versus 3 other schools)
-	var criteria = [[-1],[-1],[1,2,3]];
+	var criteria = [[1,2,3],[1,3],[1]];
 	for(var i = 0; i < 4; i++) {
 		criteria.push([-1]);
 	}
@@ -45,14 +45,15 @@ dino.viz = function() {
 			title: 'Confidence with Research',
 		},
 		bars: 'vertical',
-		axes: {
-			x: {
-				criteria: {label: 'Criteria'}
-			},
-			y: {
-				confidence: {label: 'Confidence'}
-			}
-		},
+		//axes: {
+		//	x: {
+		//		criteria: {label: 'Criteria'}
+		//	},
+		//	y: {
+		//		confidence: {label: 'Confidence'}
+		//	}
+		//},
+		
 
 		legend: { 
 			position: 'none' 
@@ -92,69 +93,31 @@ dino.viz = function() {
 			rawData = e.getDataTable();
 
 			data = new google.visualization.DataTable();
-			data.addColumn('string', 'Grade');
-			data.addColumn('string', 'Major');
-			data.addColumn('string', 'School');
-			data.addColumn('number', 'Average Confidence');
+			//data.addColumn('string', 'Grade');
+			//data.addColumn('string', 'Major');
+			//data.addColumn('string', 'School');
 			data.addColumn('string', 'BarName');
-			data.addColumn('string', 'FillColor');
-			data.addColumn('string', 'StrokeColor');
+			data.addColumn('number', 'Average Confidence');
+			
 			console.log("Adding columns to new table");
 
-            // Sort the data indexes by grade, then major, then school
-            var rowInds = rawData.getSortedRows([{column: 1},{column: 2},{column: 3}]);
-
-			var count = 0;
-            for(var i=0; i<criteria[0].length; i++)
-            {
-				for(var j=0; j<criteria[1].length; j++)
-                {
-					for(var k=0; k<criteria[2].length; k++)
-                    {
-						console.log("Getting data count:"+count+" i:"+i+", j:"+j+", k:"+k+".");
-						console.log("Current row index:"+rowInds[count]+" type "+ typeof rowInds[count])
-                        var grade = rawData.getValue(rowInds[count],1);
-                        var major = rawData.getValue(rowInds[count],2);
-                        var school = rawData.getValue(rowInds[count],3);
-                        console.log("Grade:"+grade+"\t"+"Criteria:"+criteria[0][i]+"\n"+
-									" Major:"+major+"\t"+"Criteria:"+criteria[1][j]+"\n"+
-									"School:"+school+"\t"+"Criteria:"+criteria[2][k]);
-						
-                        var sum = 0;
-
-                        var c = 0;
-                        do
-                        {
-                            //get confidance and add to sum
-                            sum += rawData.getValue(rowInds[count++],4);
-							c++;
-                        } while((grade == criteria[0][i] || grade < 0) && 
-                            (major == criteria[1][j] || major < 0) &&
-                            (school == criteria[2][k] || school < 0))
-
-						if(sum !== 0 && c !== 0)
-						{
-							// Divide sum by the count 
-							var avg = sum/c;
-							var row = [];
-							var gradeStr = dino.help.intToGrade(grade);
-							var majorStr = dino.help.intToMajor(major);
-							var schoolStr = dino.help.intToSchool(school);
-							var barName = gradeStr+" in "+majorStr+" at "+schoolStr;
-							row.push(gradeStr);
-							row.push(majorStr);
-							row.push(schoolStr);
-							row.push(avg);
-							row.push(barName);
-							console.log("Found "+c+" entries at "+barName);
-							row.push('#b87333');
-							row.push('#b87333');
-							data.addRows([row]);
-							
-						}
-					}
-				}
+			var groupedData = google.visualization.data.group(rawData,[1,2,3,4],
+			[{'column': 4, 'aggregation': google.visualization.data.avg, 'type': 'number'}]);
+			var length = groupedData.getNumberOfRows();
+			for(var i=0; i<length; i++)
+			{
+				var grade = groupedData.getValue(i,1);
+				var major = groupedData.getValue(i,2);
+				var school = groupedData.getValue(i,3);
+				var avg = groupedData.getValue(i,4);
+				var gradeStr = dino.help.intToGrade(grade);
+				var majorStr = dino.help.intToMajor(major);
+				var schoolStr = dino.help.intToSchool(school);
+				var barName = gradeStr+" in "+majorStr+" at "+schoolStr;
+				data.addRows([[barName, avg]]);
 			}
+			
+			
 			console.log("Creating DataView");
 			// Next, create the object and get the rows 
 			// corresponding to grade, major, and school.                                   
@@ -163,7 +126,7 @@ dino.viz = function() {
 			//view.setRows();
 
 			// Get a subset of the columns.                                                                            
-			view.setColumns([0,1,2,3]);
+			view.setColumns([0,1]);
 
 			// Draw the chart for the initial academic year.                                                           
 			chart.draw(view.toDataTable(), options);
