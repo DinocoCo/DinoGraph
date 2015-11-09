@@ -27,10 +27,7 @@ dino.viz = function() {
 	var totals = {};
 	
 	//Default criteria to narrow graph (Show UP versus 3 other schools)
-	var criteria = [[1,2,3],[1,3],[1]];
-	for(var i = 0; i < 4; i++) {
-		criteria.push([-1]);
-	}
+	var criteria = [[1],[1],[11]];
 
 	// Define the variable to hold the chart.                                                                              
 	var chart;                                                                         
@@ -77,7 +74,7 @@ dino.viz = function() {
 		// 9/19/2015 Corrected typo
 		// Make the initial query to get the whole Fusion table. The Fusion
 		// table’s ID is listed in red.                                                            
-		var query = "SELECT Year, Major, School, Type, AveConfidence FROM 1-OBa3j2heK1znLQ2jb3EpqYZ90i4ahW6Z6wih8Pd";
+		var query = "SELECT Year, Major, School, AveConfidence FROM 1XaesDw8HBPe2Uvx27FOlmzIzK94Fs6Ot6porY1u1";
 
 
 		var opts = {sendMethod: 'auto'};
@@ -92,29 +89,91 @@ dino.viz = function() {
 			console.log("Sending query");
 			rawData = e.getDataTable();
 
+			console.log("Received "+rawData.getNumberOfRows()+" entries.");
+			
 			data = new google.visualization.DataTable();
-			//data.addColumn('string', 'Grade');
-			//data.addColumn('string', 'Major');
-			//data.addColumn('string', 'School');
+			data.addColumn('string', 'Grade');
+			data.addColumn('string', 'Major');
+			data.addColumn('string', 'School');
 			data.addColumn('string', 'BarName');
 			data.addColumn('number', 'Average Confidence');
-			
-			console.log("Adding columns to new table");
 
-			var groupedData = google.visualization.data.group(rawData,[1,2,3,4],
-			[{'column': 4, 'aggregation': google.visualization.data.avg, 'type': 'number'}]);
+			var groups = [];
+			if(criteria[0][0] == -1) {
+				groups.push(0);
+			}
+			if(criteria[1][0] == -1) {
+				groups.push(1);
+			}
+			if(criteria[2][0] == -1) {
+				groups.push(2);
+			}
+			groups.push(3);
+			console.log(rawData.getColumnLabel(0)+" "+rawData.getColumnLabel(1)+" "+rawData.getColumnLabel(2)+" "+rawData.getColumnLabel(3));
+			var groupedData;
+			if(groups.length > 1) {
+				groupedData = google.visualization.data.group(rawData,groups,
+				[{'column': 3, 'aggregation': google.visualization.data.avg, 'type': 'number'}]);
+			}
+			else {
+				groupedData = rawData;
+			}
+			
+			
+			var allFilteredRows = [];
+			var filteredRows = groupedData.getFilteredRows([{column: 2, value: 1},{column: 0, value: 1}]);
+			
+			/*for(var j=0; j<criteria[1].length; j++) {
+				
+				var filters = [];
+				
+				if(criteria[0][0] > 0) {
+					filters.push({column: 0, value: criteria[0][0]});
+				}
+				if(criteria[1][j] > 0) {
+					filters.push({column: 1, value: criteria[1][j]});
+				}
+				if(criteria[2][0] > 0) {
+					filters.push({column: 2, value: criteria[2][0]});
+				}
+				
+				if(filters.length > 0) {
+					console.log(filters[0].column+" "+filters[1].column);
+					var filteredRows = groupedData.getFilteredRows(filters);
+					allFilteredRows = allFilteredRows.concat(filteredRows);
+					console.log(filteredRows);
+				}
+			}
+			allFilteredRows.sort();
+			console.log("hi again");*/
+			//if(allFilteredRows.length == 0)
+			//{
+			//	allFilteredRows[0] = 0;
+			//}
+			//
+			//
+			//var filteredRows = groupedData.getFilteredRows();
 			var length = groupedData.getNumberOfRows();
+			console.log("Received "+length+" unique rows. Have "+allFilteredRows.length+" rows after filter.");
+			console.log(groupedData.getColumnLabel(0)+" "+groupedData.getColumnLabel(1)+" "+groupedData.getColumnLabel(2));
+
+			
 			for(var i=0; i<length; i++)
 			{
-				var grade = groupedData.getValue(i,1);
-				var major = groupedData.getValue(i,2);
-				var school = groupedData.getValue(i,3);
-				var avg = groupedData.getValue(i,4);
+				var grade = groupedData.getValue(i,0);
+				var major = groupedData.getValue(i,1);
+				var school = groupedData.getValue(i,2);
+				var avg = groupedData.getValue(i,3);
+				//var grade = groupedData.getValue(allFilteredRows[i],0);
+				//var major = groupedData.getValue(allFilteredRows[i],1);
+				//var school = groupedData.getValue(allFilteredRows[i],2);
+				//var avg = groupedData.getValue(allFilteredRows[i],3);
 				var gradeStr = dino.help.intToGrade(grade);
 				var majorStr = dino.help.intToMajor(major);
 				var schoolStr = dino.help.intToSchool(school);
 				var barName = gradeStr+" in "+majorStr+" at "+schoolStr;
-				data.addRows([[barName, avg]]);
+				data.addRows([[gradeStr,majorStr,schoolStr,barName, avg]]);
+				//console.log(barName);
 			}
 			
 			
@@ -126,7 +185,7 @@ dino.viz = function() {
 			//view.setRows();
 
 			// Get a subset of the columns.                                                                            
-			view.setColumns([0,1]);
+			view.setColumns([3,4]);
 
 			// Draw the chart for the initial academic year.                                                           
 			chart.draw(view.toDataTable(), options);
