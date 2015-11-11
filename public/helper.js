@@ -18,89 +18,68 @@ dino.help = function() {
         return intArr;
     };
 	
-	dino.help.intToGrade = function(grade)
-	{
-		var gradeInt = parseInt(grade,10);
-		switch(gradeInt)
-		{
-			case -1:
-				return "All";
-			case 0:
-				return "Freshman";
-			case 1:
-				return "Sophomore";
-			case 2:
-				return "Junior";
-			case 3:
-				return "Senior";
-			case 4:
-				return "Graduate";
-			default:
-				return "";
-		}
-    };
+	dino.help.intToGrade = ["",
+							"",
+							"Freshman",
+							"Sophomore",
+							"Junior",
+							"Senior",
+							"Graduate"];
 	
-	dino.help.intToMajor = function(major)
-	{
-		var majorInt = parseInt(major,10);
-		switch(majorInt)
-		{
-			case -1:
-				return "All";
-			case 0:
-				return "Life Sciences";
-			case 1:
-				return "Business";
-			case 2:
-				return "Engineering and Math";
-			case 3:
-				return "Humanities, Arts, and Sciences";
-			case 4:
-				return "Vocational";
-			default:
-				return "";
-		}
-    };
+	dino.help.intToMajor = ["",
+							"Life Sciences",
+							"Business",
+							"Engineering and Math",
+							"Humanities, Arts, and Sciences",
+							"Vocational"];
 	
-	dino.help.intToSchool = function(school)
+	dino.help.intToSchool = ["",
+							"Angelo State University",
+							"Centenary College of Louisiana",
+							"Lake Superior State University",
+							"Lawson state community college",
+							"Mountain Empire Community College",
+							"Otero Junior College",
+							"Pacific Lutheran University",
+							"Saint Mary's College of California",
+							"Southwestern Community College",
+							"Trine University",
+							"University of Portland",
+							"Virginia Commonwealth University Qatar",
+							"Private",
+							"Public"];
+	
+	dino.help.convertToString = function(num,type)
 	{
-		var schoolInt = parseInt(school,10);
-		switch(schoolInt)
+		switch(type)
 		{
-			case -3:
-				return "Private";
-			case -2:
-				return "Public";
-			case -1:
-				return "All";
+			case 0:
+				return dino.help.intToGrade[num];
 			case 1:
-				return "Angelo State University";
+				return dino.help.intToMajor[num];
 			case 2:
-				return "Centenary College of Louisiana";
-			case 3:
-				return "Lake Superior State University";
-			case 4:
-				return "Lawson state community college";
-			case 5:
-				return "Mountain Empire Community College";
-			case 6:
-				return "Otero Junior College";
-			case 7:
-				return "Pacific Lutheran University";
-			case 8:
-				return "Saint Mary's College of California";
-			case 9:
-				return "Southwestern Community College";
-			case 10:
-				return "Trine University";
-			case 11:
-				return "University of Portland";
-			case 12:
-				return "Virginia Commonwealth University Qatar";
+				return dino.help.intToSchool[num];
 			default:
 				return "";
 		}
-    };
+	};
+	dino.help.convertToInt = function(str,type)
+	{
+		switch(type)
+		{
+			case 0:
+				return dino.help.intToGrade.indexOf(str);
+			case 1:
+				return dino.help.intToMajor.indexOf(str);
+			case 2:
+				return dino.help.intToSchool.indexOf(str);
+			default:
+				return "";
+		}
+	}
+	
+	
+	
 };
 
 dino.help();
