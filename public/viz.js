@@ -21,9 +21,12 @@ dino.viz = function() {
     google.setOnLoadCallback(vizInit);
 
     // Define the variables to hold the entire fusion table,
-    // and a collection of views, one for each year.
+    // and the processed data for viewing
     var data;
     var rawData;
+	
+	// Define the view that draws the data
+	var view;
 
     //Default criteria to narrow graph (Show UP versus 3 other schools)
 
@@ -38,25 +41,16 @@ dino.viz = function() {
     var options = {
         width: 700,
         height: 400,
-        //chart: {
-            title: 'Confidence with Research',
-        //},
-        //bars: 'vertical',
-        //axes: {
-        //  x: {
-        //      criteria: {label: 'Criteria'}
-        //  },
-        //  y: {
-        //      confidence: {label: 'Confidence'}
-        //  }
-        //},
-
+		backgroundColor: {
+			fill:'transparent'
+		},
+		
         legend: {
             position: 'none'
         },
         animation: {
             "startup" : true,
-            "duration" : 500
+            "duration" : 10
         }
     };
 
@@ -99,9 +93,8 @@ dino.viz = function() {
 
     dino.viz.vizController = function(criteria)
     {
-        var groups = [];
-
         // Group the rows where all is selected
+		var groups = [];
         for(var i=0;i<criteria.length;i++)
         {
             if(criteria[i][0] !== -1) //Not sorted by all
@@ -171,10 +164,9 @@ dino.viz = function() {
 
             //Create a new row if it gets this far
 
-            //Convert to two decimals of precision
+            //Convert to two decimals of precision to improve readability
             var avg = groupedData.getValue(i,col);
             avg = parseFloat(Math.round(avg * 100) / 100);
-
 
             data.addRows([[barName, avg, style]]);
         }
@@ -182,16 +174,20 @@ dino.viz = function() {
         console.log("Creating DataView");
         // Next, create the object and get the rows
         // corresponding to grade, major, and school.
-        var view = new google.visualization.DataView(data);
+		
+        view = new google.visualization.DataView(data);
 
         //view.setRows();
-
-        // Get a subset of the columns.
-        view.setColumns([0,1,2]);
 
         // Draw the chart for the initial academic year.
         chart.draw(view.toDataTable(), options);
     };
+	
+	dino.viz.draw = function(windowHeight)
+    {
+		options.height = Math.max(300,.91*windowHeight-310);
+		chart.draw(view.toDataTable(), options);
+	}
 };
 
 dino.viz();

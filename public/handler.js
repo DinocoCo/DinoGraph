@@ -12,6 +12,7 @@ dino.handle = {};
 
 dino.handle = function() {
 
+	var lastHeight = 0;
     // Initialize after the window loads fully
     window.onload = function()
     {
@@ -27,7 +28,20 @@ dino.handle = function() {
         {
             select[i] = document.getElementById(options[i]);
         }
-
+		
+        
+        //redraw the chart on resize
+        window.onresize = function()
+        {
+            var height = window.innerHeight;
+            if(lastHeight !== height)
+			{
+				lastHeight = height;
+				console.log(lastHeight);
+				dino.viz.draw(height);
+			}
+        }
+		
         // From this point forward, when the button is clicked,
         // this function shall be invoked.
         button.onclick = function()

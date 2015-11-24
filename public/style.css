@@ -1,0 +1,34 @@
+body {
+	background-color:rgb(229,227,223);
+}
+
+div#top {
+	padding: 30px;
+	border-bottom: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #7fb0cd;
+	width: 640px;
+}
+
+p {
+	display: inline-block;
+	padding: 0px;
+	margin: 0px;
+	display: inline;
+	font-family: 'Roboto', sans-serif;
+}
+
+p#title0 {
+	font-size: 300%;
+	font-weight: bold;
+}
+
+p#title1 {
+	font-size: 200%;
+	font-weight: black;
+	margin-left: 270px;
+}
+
+div#chartTitle {
+	display: block;
+}

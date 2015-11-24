@@ -4,13 +4,15 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
         <title>DinoGraph</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        
         
         <script type="text/javascript"src="https://www.google.com/jsapi"></script>
         <script type="text/javascript" src="viz.js" ></script>
         <script type="text/javascript" src="handler.js"></script>
         
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
     </head>    
 
     <body>
@@ -20,52 +22,58 @@
                     <p id="title0">DinoGraph</p>
                     <p>Making a better future today.</p>
                 </div>
+				<div id="chartTitle"><p id="title1">Confidence</p></div>
                 
                 <div id="ex0"></div>
-                
+				
                 <div class="list-group">
-                    <select size=6 id="year">
-                        <option value="-1">All
-                        <option value="2">Freshman
-                        <option value="3">Sophomore
-                        <option value="4">Junior
-                        <option value="5">Senior
-                        <option value="6">Graduate Student
-                    </select>
-                    <select multiple size=6 id="major">
-                        <option value="-1">All
-                        <option value="1">Life Sciences
-                        <option value="2">Business
-                        <option value="3">Engineering and Math
-                        <option value="4">Humanities, Arts, and Sciences
-                        <option value="5">Vocational
-                    </select>
-                    <select multiple size=6 id="school">
-                        <option value="-1">All
-                        <option value="13">Public
-                        <option value="14">Private
-                        <option value="1">Angelo State University
-                        <option value="2">Centenary College of Louisiana
-                        <option value="3">Lake Superior State University
-                        <option value="4">Lawson state community college
-                        <option value="5">Mountain Empire Community College
-                        <option value="6">Otero Junior College
-                        <option value="7">Pacific Lutheran University
-                        <option value="8">Saint Mary's College of California
-                        <option value="9">Southwestern Community College
-                        <option value="10">Trine University
-                        <option value="11">University of Portland
-                        <option value="12">Virginia Commonwealth University Qatar
-                    </select>
+				<table>
+					<tr>
+						<td><p>Year</p></td>
+						<td><p>Major</p></td>
+						<td><p>University</p></td>
+					</tr>
+					<tr>
+						<td><select size=6 id="year">
+							<option value="-1">All
+							<option value="2">Freshman
+							<option value="3">Sophomore
+							<option value="4">Junior
+							<option value="5">Senior
+							<option value="6">Graduate Student
+						</select></td>
+						<td><select multiple size=6 id="major">
+							<option value="-1">All
+							<option value="1">Life Sciences
+							<option value="2">Business
+							<option value="3">Engineering and Math
+							<option value="4">Humanities, Arts, and Sciences
+							<option value="5">Vocational
+						</select></td>
+						<td><select multiple size=6 id="school">
+							<option value="-1">All
+							<option value="13">Public Universities
+							<option value="14">Private Universities
+							<option value="1">Angelo State University
+							<option value="2">Centenary College of Louisiana
+							<option value="3">Lake Superior State University
+							<option value="4">Lawson state community college
+							<option value="5">Mountain Empire Community College
+							<option value="6">Otero Junior College
+							<option value="7">Pacific Lutheran University
+							<option value="8">Saint Mary's College of California
+							<option value="9">Southwestern Community College
+							<option value="10">Trine University
+							<option value="11">University of Portland
+							<option value="12">Virginia Commonwealth University Qatar
+						</select></td>
+					</tr>
+				</table>
                 </div>
+				
                 
                 <div class="submit-button">
-                <button type="button" id="submit-btn" class="btn btn-default">Submit</button>
-                
-                <footer>&copy; Author: Dinoco Corp</footer>
-                
-                <button type="button" id="aboutBtn" class="btn btn-default">About</button>
-                <div id="about">Lorem ipsum dolo sit amet, consectetur adipiscing elit. Duis ac lacus vitae neque semper posuere. Nunc luctus vel magna laoreet consectetur. Aliquam mollis mi id odio vulputate, ac interdum odio blandit. In pharetra ante vel viverra mattis. Etiam suscipit turpis eu dolor luctus, lobortis dapibus lacus auctor. Nunc ultricies mauris sit amet erat molestie finibus. Suspendisse potenti. Etiam ac lorem sed ex porta mattis. Nam blandit a eros vitae lobortis. Donec ultricies, velit vel pulvinar mollis, purus ante blandit turpis, ac egestas nunc felis quis neque. Vivamus eu volutpat urna, non ultricies libero.
+                    <button type="button" id="submit-btn" class="btn btn-default">Submit</button>
                 </div>
             </div>
         </div>

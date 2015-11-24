@@ -1,0 +1,13 @@
+{
+  "name": "DinoGraph"
+  "description": "A data visualization website that displays data from the Credo Dataset comparing students' confidence with research",
+  "repository": "https://github.com/DinocoCo/DinoGraph",
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+	"cs341",
+	"dinoco",
+	"dinograph"
+  ]
+}

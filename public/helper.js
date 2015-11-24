@@ -10,12 +10,12 @@ dino.help = function() {
     //Arrays of each criteria
     //index corresponds to value in fusion table
     dino.help.intToGrade = ["",
-                            "",
                             "Freshman",
                             "Sophomore",
                             "Junior",
                             "Senior",
-                            "Graduate"];
+                            "Graduate",
+							"Post-Grad"];
 
     dino.help.intToMajor = ["",
                             "Life Sciences",
@@ -37,33 +37,33 @@ dino.help = function() {
                             "Trine University",
                             "University of Portland",
                             "Virginia Commonwealth University Qatar",
-                            "Private",
-                            "Public"];
+                            "Private Universities",
+                            "Public Universities"];
 
     //Arrays of the styles for each criteria
     //index corresponds to value in fusion table
     dino.help.gradeToStyle = ["",
-                            "",
                             "stroke-color: #1b5e20",
-                            "stroke-color: #aeea00",
+                            "stroke-color: #607d8b",
                             "stroke-color: #ff6f00",
                             "stroke-color: #e65100",
-                            "stroke-color: #3e2723"];
+                            "stroke-color: #3e2723",
+							"stroke-color: #008696"];
 
     dino.help.majorToStyle = ["",
-                            "stroke-width: 5",
-                            "stroke-width: 10",
-                            "stroke-width: 15",
-                            "stroke-width: 20",
-                            "stroke-width: 25"];
+                            "stroke-width: 2",
+                            "stroke-width: 2",
+                            "stroke-width: 2",
+                            "stroke-width: 2",
+                            "stroke-width: 2"];
 
     dino.help.schoolToStyle = ["",
                             "fill-color: rgb(36, 83, 150)",
                             "fill-color: rgb(138, 21, 40)",
                             "fill-color: rgb(0, 85, 150)",
-                            "fill-color: rgb(248, 199, 40)",//can change
+                            "fill-color: rgb(248, 199, 40)",
                             "fill-color: rgb(221, 0, 54)",
-                            "fill-color: rgb(255, 255, 255)",//or blue
+                            "fill-color: rgb(255, 255, 255)",
                             "fill-color: rgb(0, 0, 0)",
                             "fill-color: rgb(216, 31, 38)",
                             "fill-color: rgb(171, 3, 51)",
