@@ -13,6 +13,9 @@ dino.handle = {};
 dino.handle = function() {
 
 	var lastHeight = 0;
+	
+	dino.handle.loaded = false;
+	
     // Initialize after the window loads fully
     window.onload = function()
     {
@@ -29,6 +32,18 @@ dino.handle = function() {
             select[i] = document.getElementById(options[i]);
         }
 		
+		//Array indexOf function needs to be defined for IE 8 and below
+		if (!Array.prototype.indexOf)
+		{
+			Array.prototype.indexOf = function(obj, start)
+			{
+				for (var i = (start || 0), j = this.length; i < j; i++)
+				{
+					if (this[i] === obj) { return i; }
+				}
+				return -1;
+			}
+		}
         
         //redraw the chart on resize
         window.onresize = function()
@@ -73,6 +88,8 @@ dino.handle = function() {
             // Pass the input tho the controller
             dino.viz.vizController(criteria);
         };
+		
+		dino.handle.loaded = true;
 	};
 };
 

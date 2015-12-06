@@ -19,7 +19,9 @@ dino.viz = function() {
     google.load('visualization', '1', {packages: ['corechart']});
 
     google.setOnLoadCallback(vizInit);
-
+	
+	dino.viz.loaded = false;
+	
     // Define the variables to hold the entire fusion table,
     // and the processed data for viewing
     var data;
@@ -30,10 +32,19 @@ dino.viz = function() {
 
     //Default criteria to narrow graph (Show UP versus 3 other schools)
 
-    var initCriteria = [[-1],[1,2,3,4,5],[11]];
+    var currentCriteria = [[-1],[1,2,3,4,5],[11]];
 
     // Define the variable to hold the chart.
     var chart;
+	
+	// Define variable to hold the element we are drawing on
+	var canvas;
+	
+	// Define variable used to draw directly on the canvas
+	var ctx;
+	
+	// Define variable that constrains the size and location of the canvas
+	var overlay;
 
     // Set the options for the chart to be drawn.  This include the
     // width, height, title, horizontal axis, vertical axis.  Finally
@@ -58,6 +69,12 @@ dino.viz = function() {
     {
         console.log("Initializing vis");
 
+		canvas = document.getElementById('legend');
+		
+		overlay = document.getElementById('overlay');
+		
+		ctx = canvas.getContext("2d");
+		
         // Create a new viz object using the google API -- specifically,
         // we are going to make a column chart inside the div called ex0
         // in the html file.
@@ -86,14 +103,16 @@ dino.viz = function() {
             console.log("Received "+rawData.getNumberOfRows()+" entries.");
 
             //Call the vizController to create a new data table and draw it
-            dino.viz.vizController(initCriteria);
+            dino.viz.vizController(currentCriteria);
 
         });
+		
+		dino.viz.loaded = true;
     };
 
     dino.viz.vizController = function(criteria)
     {
-        // Group the rows where all is selected
+		// Group the rows where all is selected
 		var groups = [];
         for(var i=0;i<criteria.length;i++)
         {
@@ -181,12 +200,84 @@ dino.viz = function() {
 
         // Draw the chart for the initial academic year.
         chart.draw(view.toDataTable(), options);
+		dino.viz.drawLegend(criteria);
+		currentCriteria = criteria;
     };
 	
 	dino.viz.draw = function(windowHeight)
     {
 		options.height = Math.max(300,.91*windowHeight-310);
 		chart.draw(view.toDataTable(), options);
+		dino.viz.drawLegend(currentCriteria);
+	}
+	
+	dino.viz.drawLegend = function(criteria)
+	{
+		var size = 10;
+		var y = 1;
+		ctx.clearRect(0,0,1000,1000);
+		var elements = [];
+		var width = 0;
+		
+		for(var i=1;i<criteria.length;i++)
+        {
+			for(var j=0;j<criteria[i].length;j++)
+			{
+				//Do not have a legend for all and major
+				if(criteria[i][j] !== -1)
+				{
+					
+					var name =  dino.help.convertToString(criteria[i][j],i);
+					var style = dino.help.convertToStyle(criteria[i][j],i);
+					
+					// Make sure style and name are defined
+					if(style && name)
+					{
+						//Hex format
+						if(style.length > 7 && style.charAt(style.length-7) == '#')
+						{
+							style = style.substring(style.length-7);
+						}
+						//RGB format
+						else if(style.length > 15 && style.substring(12,15) == "rgb")
+						{
+							style = style.substring(12);
+						}
+						
+						//Create new object to store information about what we will draw
+						var element = {};
+						element.name = name;
+						element.style = style;
+						element.height = y;
+						elements.push(element);
+						y+=2;
+						
+						// Calculate the total width of the element and store the
+						// largest one
+						var w = ctx.measureText(name).width + size*2.5;
+						if(width < w)
+						{
+							width = w;
+						}
+					}
+				}
+			}
+			y++;
+        }
+		canvas.height = (y-1)*size;
+		canvas.width = width+size;
+		overlay.style.top = ((options.height-canvas.height)/2)+"px";
+		console.log("overlay coord"+overlay.style.top);
+		
+		for(var i=0;i<elements.length;i++)
+		{
+			ctx.beginPath();
+			ctx.fillStyle=elements[i].style;
+			ctx.fillRect(size,size*elements[i].height,size,size);
+			ctx.fillStyle="black";
+			ctx.fillText(elements[i].name,size*2.5,size*elements[i].height+size);
+			ctx.stroke();
+		}
 	}
 };
 

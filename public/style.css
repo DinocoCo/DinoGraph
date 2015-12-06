@@ -26,9 +26,27 @@ p#title0 {
 p#title1 {
 	font-size: 200%;
 	font-weight: black;
-	margin-left: 270px;
+	/*margin-left: 100px;*/
+	margin-left: 130px;
 }
 
 div#chartTitle {
 	display: block;
 }
+
+div#ex0 {
+	position: relative;
+	width: 700px;
+}
+
+div#chart {
+	position: relative;
+	width: 900px;
+}
+
+div#overlay {
+    position: absolute;
+    left: 600px;
+
+}
+
