@@ -206,7 +206,12 @@ dino.viz = function() {
 	
 	dino.viz.draw = function(windowHeight)
     {
-		options.height = Math.max(300,.91*windowHeight-310);
+		var newHeight = Math.max(300,.91*windowHeight-310);
+		if(newHeight)
+		{
+			options.height = newHeight;
+		}
+		
 		chart.draw(view.toDataTable(), options);
 		dino.viz.drawLegend(currentCriteria);
 	}
@@ -267,7 +272,6 @@ dino.viz = function() {
 		canvas.height = (y-1)*size;
 		canvas.width = width+size;
 		overlay.style.top = ((options.height-canvas.height)/2)+"px";
-		console.log("overlay coord"+overlay.style.top);
 		
 		for(var i=0;i<elements.length;i++)
 		{
