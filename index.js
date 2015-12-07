@@ -1,16 +1,4 @@
-var compression = require('compression');
-//var compression = require('minify');
-
-/*var compressedFiles = ["excanvas.js"]; //["excanvas.js","handler.js","helper.js","index.html","style.css","viz.js"];
-
-var errorFunction = function(error, name) {
-    console.log(error || name);
-};
-
-for(var i=0;i<compressedFiles.length;i++) {
-
-}
-minify("public\"+compressedFiles[i], errorFunction);*/
+//var compression = require('compression');
 
 var http = require('http');  
 var https = require('https');
@@ -20,7 +8,7 @@ https.globalAgent.maxSockets = Infinity;
 var express = require('express');
 var app = express();
 
-app.use(compression());
+app.use(express.compress());
 
 app.set('port', (process.env.PORT || 5000));
 
