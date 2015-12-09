@@ -1,28 +1,25 @@
 //Minify all js files and combine into one
 var compressor = require('node-minify');
-var jsFiles = ['src/js/excanvas.js', 'src/js/handler.js', 'src/js/helper.js', 'src/js/viz.js'];
-for(var i=0;i<jsFiles.length;i++)
-{
-	// Using Google Closure 
-	new compressor.minify(
-	{
-		type: 'gcc',
-		fileIn: jsFiles,
-		fileOut: 'public/concat.min.js',
-		callback: function(err, min) {
-			if(err)
-			{
-				console.log(err);
-			}
-			else
-			{
-				console.log('Successfully compiled concat.min.js');
-			}
-		}
-	});
-}
 
-//Minify style.css file with YUI-css
+// Minify all js files using Google Closure 
+new compressor.minify(
+{
+	type: 'gcc',
+	fileIn: ['src/js/handler.js', 'src/js/helper.js', 'src/js/viz.js'],
+	fileOut: 'public/concat.min.js',
+	callback: function(err, min) {
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			console.log('Successfully compiled concat.min.js');
+		}
+	}
+});
+
+//Minify style.css file with YUI
 new compressor.minify(
 {
 	type: 'yui-css',
@@ -32,6 +29,10 @@ new compressor.minify(
 		if(err)
 		{
 			console.log(err);
+		}
+		else
+		{
+			console.log('Successfully compiled style.css');
 		}
 	}
 });
@@ -57,7 +58,7 @@ fs.writeFile('public/index.html', minifiedHTML, function (err){
   if(err) {
     console.log(err);
   } else {
-    console.log("Script generated and saved:", 'index.html');
+    console.log('Successfully compiled index.html');
   }      
 });
 
