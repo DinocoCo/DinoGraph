@@ -62,23 +62,41 @@ fs.writeFile('public/index.html', minifiedHTML, function (err){
   }      
 });
 
+//Increase number of available sockets in case of heavy traffic
 var http = require('http');  
 var https = require('https');
 http.globalAgent.maxSockets = Infinity;  
 https.globalAgent.maxSockets = Infinity;  
 
-var compress = require('compression');
+
 
 var express = require('express');
 var app = express();
 
+//Compress the webpage with gzip
+var compress = require('compression');
 app.use(compress());
 
+//Set port to 5000 or whatever port the process is already on
 app.set('port', (process.env.PORT || 5000));
+
+//Redirect www to the base http page
+app.all(/.*/, function(req, res, next) {
+	var host = req.header("host");
+	if (host.match(/^www\..*/i))
+	{
+		res.redirect(301, "http://." + host);
+	}
+	else
+	{
+		next();
+	}
+});
 
 app.use(express.static('public', { maxAge: 31557600 }));
 
 
-app.listen(app.get('port'), function() {
+
+app.listen(app.get('port'), '::',function() {
     console.log("Node is running at: " + app.get('port'));    
-})
+});

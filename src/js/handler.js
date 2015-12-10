@@ -56,6 +56,8 @@ dino.handle = function() {
 				dino.viz.draw(height);
 			}
         }
+		//pass the window's height to viz on load
+		window.onresize();
 		
         // From this point forward, when the button is clicked,
         // this function shall be invoked.

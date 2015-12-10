@@ -18,7 +18,12 @@ p {
 	font-family: 'Roboto', sans-serif;
 }
 
-p#title0 {
+h1 {
+	display: inline-block;
+	padding: 0px;
+	margin: 0px;
+	display: inline;
+	font-family: 'Roboto', sans-serif;
 	font-size: 300%;
 	font-weight: bold;
 }
@@ -26,7 +31,6 @@ p#title0 {
 p#title1 {
 	font-size: 200%;
 	font-weight: black;
-	/*margin-left: 100px;*/
 	margin-left: 130px;
 }
 
