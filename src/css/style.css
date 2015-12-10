@@ -19,7 +19,6 @@ p {
 }
 
 h1 {
-	display: inline-block;
 	padding: 0px;
 	margin: 0px;
 	display: inline;
@@ -28,7 +27,11 @@ h1 {
 	font-weight: bold;
 }
 
-p#title1 {
+h2 {
+	padding: 0px;
+	margin: 0px;
+	display: inline;
+	font-family: 'Roboto', sans-serif;
 	font-size: 200%;
 	font-weight: black;
 	margin-left: 130px;
@@ -40,17 +43,15 @@ div#chartTitle {
 
 div#ex0 {
 	position: relative;
-	width: 700px;
+	width: 50%;
 }
 
 div#chart {
 	position: relative;
-	width: 900px;
+	width: 20%;
 }
 
 div#overlay {
     position: absolute;
     left: 600px;
-
 }
-

@@ -46,6 +46,9 @@ dino.viz = function() {
 	// Define variable that constrains the size and location of the canvas
 	var overlay;
 
+	//var initHeight = Math.max(300,.91*window.innerHeight-310);
+	var legendContents;
+
     // Set the options for the chart to be drawn.  This include the
     // width, height, title, horizontal axis, vertical axis.  Finally
     // turn off the legend.
@@ -200,16 +203,23 @@ dino.viz = function() {
 
         // Draw the chart for the initial academic year.
         chart.draw(view.toDataTable(), options);
+		legendContents = null;
 		dino.viz.drawLegend(criteria);
 		currentCriteria = criteria;
     };
 	
-	dino.viz.draw = function(windowHeight)
+	dino.viz.draw = function(windowWidth,windowHeight)
     {
 		var newHeight = Math.max(300,.91*windowHeight-310);
 		if(newHeight)
 		{
 			options.height = newHeight;
+		}
+		
+		var newWidth = Math.max(700,.91*windowWidth-310);
+		if(newWidth)
+		{
+			options.width = newWidth;
 		}
 		
 		chart.draw(view.toDataTable(), options);
@@ -220,66 +230,72 @@ dino.viz = function() {
 	{
 		var size = 10;
 		var y = 1;
-		ctx.clearRect(0,0,1000,1000);
-		var elements = [];
+		
+		//Clear the entire screen
+		ctx.clearRect(0,0,100000,100000);
 		var width = 0;
 		
-		for(var i=1;i<criteria.length;i++)
-        {
-			for(var j=0;j<criteria[i].length;j++)
+		if(!legendContents)
+		{
+			legendContents = [];
+			for(var i=1;i<criteria.length;i++)
 			{
-				//Do not have a legend for all and major
-				if(criteria[i][j] !== -1)
+				for(var j=0;j<criteria[i].length;j++)
 				{
-					
-					var name =  dino.help.convertToString(criteria[i][j],i);
-					var style = dino.help.convertToStyle(criteria[i][j],i);
-					
-					// Make sure style and name are defined
-					if(style && name)
+					//Do not have a legend for all and major
+					if(criteria[i][j] !== -1)
 					{
-						//Hex format
-						if(style.length > 7 && style.charAt(style.length-7) == '#')
-						{
-							style = style.substring(style.length-7);
-						}
-						//RGB format
-						else if(style.length > 15 && style.substring(12,15) == "rgb")
-						{
-							style = style.substring(12);
-						}
 						
-						//Create new object to store information about what we will draw
-						var element = {};
-						element.name = name;
-						element.style = style;
-						element.height = y;
-						elements.push(element);
-						y+=2;
+						var name =  dino.help.convertToString(criteria[i][j],i);
+						var style = dino.help.convertToStyle(criteria[i][j],i);
 						
-						// Calculate the total width of the element and store the
-						// largest one
-						var w = ctx.measureText(name).width + size*2.5;
-						if(width < w)
+						// Make sure style and name are defined
+						if(style && name)
 						{
-							width = w;
+							//Hex format
+							if(style.length > 7 && style.charAt(style.length-7) == '#')
+							{
+								style = style.substring(style.length-7);
+							}
+							//RGB format
+							else if(style.length > 15 && style.substring(12,15) == "rgb")
+							{
+								style = style.substring(12);
+							}
+							
+							//Create new object to store information about what we will draw
+							var element = {};
+							element.name = name;
+							element.style = style;
+							element.height = y;
+							legendContents.push(element);
+							y+=2;
+							
+							// Calculate the total width of the element and store the
+							// largest one
+							var w = ctx.measureText(name).width + size*2.5;
+							if(width < w)
+							{
+								width = w;
+							}
 						}
 					}
 				}
+				y++;
 			}
-			y++;
-        }
+		}
 		canvas.height = (y-1)*size;
 		canvas.width = width+size;
 		overlay.style.top = ((options.height-canvas.height)/2)+"px";
+		overlay.style.left = (0.9*options.width)+"px";
 		
-		for(var i=0;i<elements.length;i++)
+		for(var i=0;i<legendContents.length;i++)
 		{
 			ctx.beginPath();
-			ctx.fillStyle=elements[i].style;
-			ctx.fillRect(size,size*elements[i].height,size,size);
+			ctx.fillStyle=legendContents[i].style;
+			ctx.fillRect(size,size*legendContents[i].height,size,size);
 			ctx.fillStyle="black";
-			ctx.fillText(elements[i].name,size*2.5,size*elements[i].height+size);
+			ctx.fillText(legendContents[i].name,size*2.5,size*legendContents[i].height+size);
 			ctx.stroke();
 		}
 	}

@@ -13,6 +13,7 @@ dino.handle = {};
 dino.handle = function() {
 
 	var lastHeight = 0;
+	var lastWidth = 0;
 	
 	dino.handle.loaded = false;
 	
@@ -48,16 +49,14 @@ dino.handle = function() {
         //redraw the chart on resize
         window.onresize = function()
         {
-            var height = window.innerHeight;
-            if(lastHeight !== height)
+            if(lastHeight !== window.innerHeight|| lastWidth !== window.innerWidth)
 			{
-				lastHeight = height;
-				console.log(lastHeight);
-				dino.viz.draw(height);
+				lastHeight = window.innerHeight;
+				lastWidth = window.innerWidth;
+				dino.viz.draw(window.innerWidth,window.innerHeight);
 			}
         }
 		//pass the window's height to viz on load
-		window.onresize();
 		
         // From this point forward, when the button is clicked,
         // this function shall be invoked.
