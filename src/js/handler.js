@@ -11,9 +11,6 @@ var dino = dino || {};
 dino.handle = {};
 
 dino.handle = function() {
-
-	var lastHeight = 0;
-	var lastWidth = 0;
 	
 	dino.handle.loaded = false;
 	
@@ -45,17 +42,19 @@ dino.handle = function() {
 				return -1;
 			}
 		}
-        
-        //redraw the chart on resize
+
+		//redraw graph when window resize is completed  
         window.onresize = function()
-        {
-            if(lastHeight !== window.innerHeight|| lastWidth !== window.innerWidth)
+		{
+			if(this.resizeTO)
 			{
-				lastHeight = window.innerHeight;
-				lastWidth = window.innerWidth;
-				dino.viz.draw(window.innerWidth,window.innerHeight);
+				clearTimeout(this.resizeTO);
 			}
-        }
+			this.resizeTO = setTimeout(function() {
+				dino.viz.draw();
+			}, 100);
+		}
+		
 		//pass the window's height to viz on load
 		
         // From this point forward, when the button is clicked,

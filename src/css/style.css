@@ -2,6 +2,11 @@ body {
 	background-color:rgb(229,227,223);
 }
 
+div#container-fluid {
+	position: absolute;
+	left: 0px;
+}
+
 div#top {
 	padding: 30px;
 	border-bottom: 2px;
@@ -43,15 +48,22 @@ div#chartTitle {
 
 div#ex0 {
 	position: relative;
-	width: 50%;
+	width: 80%;
+	height: 100%;
+	
 }
 
 div#chart {
 	position: relative;
-	width: 20%;
+	width: 90%;
+	height: 100%;
 }
 
 div#overlay {
     position: absolute;
     left: 600px;
+}
+
+canvas#legend {
+	border: 1px solid #d3d3d3;
 }
